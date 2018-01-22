@@ -1,0 +1,16 @@
+#
+#Elasticsearch2
+#docker run --rm -d -v /my/volume:/usr/share/elasticsearch/data -e ES_HEAP_SIZE=512m --name elasticsearch2 elasticsearch:2
+#-----------------------------------------------------------------------------------------------------------------------------------------
+#
+#NProbe
+#docker run --rm -d -p 5566:5566 --name nprobe nprobe --zmq "tcp://127.0.0.1:6655" --collector-port 5566 --collector none --flow-version 9
+#-----------------------------------------------------------------------------------------------------------------------------------------
+#
+#NTopng
+#docker run --rm -d --link nprobe --link elasticsearch2 -p 3000:3000 --name ntopng ntopng --https-port 3000 --http-port 0 -i "tcp://127.0.0.1:6655" -F "es;ntopng;ntopng-%Y.%m.%d;http://elasticsearch2:9200/_bulk;" --dns-mode 0
+#-----------------------------------------------------------------------------------------------------------------------------------------
+#
+#Kibana4
+#docker run --rm -d --link elasticsearch2 -e ELASTICSEARCH_URL=http://elasticsearch2:9200 -p 5601:5601 --name kibana4 kibana:4
+#-----------------------------------------------------------------------------------------------------------------------------------------
